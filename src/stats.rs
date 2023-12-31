@@ -1,6 +1,9 @@
+//! The stats module contains the stats loop
+//!
+//!  # Stats Loop function, as well as the Output Progress function and the Time Output trait.
+//! this module contains the majority of the program functionality
 mod timer;
 
-use std::fmt::format;
 use crossbeam::channel::Receiver;
 use::crossterm::{
     cursor, execute,
@@ -55,11 +58,21 @@ pub fn stats_loop(
      );
      let _ = stderr.flush();
  }
-trait TimeOutput {
+
+/// TimeOutput adds an `add_time()` method to `u64`
+///
+/// # Example
+///
+/// ```rust
+/// use progressscry::stats::TimeOutput;
+/// assert_eq!(65_u64.as_time(), String::from("0:01:05"))
+/// ```
+pub trait TimeOutput {
     fn as_time(&self) -> String;
 }
 
 impl TimeOutput for u64 {
+    /// this formats how the time will output
     fn as_time(&self) -> String {
         let (hours, left) = (*self / 3600, *self % 3600);
         let (minutes, seconds) = (left / 60, left % 60);
@@ -67,3 +80,19 @@ impl TimeOutput for u64 {
     }
 }
 
+#[cfg(test)]
+mod tests {
+    use super::TimeOutput;
+
+    fn as_time_format() {
+        let pairs = vec![
+            (5_u64, "0:00:05"),
+            (60_u64, "0:01:00"),
+            (154_u64, "0:02:34"),
+            (3603_u64, "1:00:03"),
+        ];
+        for (input, output) in pairs {
+            assert_eq!(input.as_time().as_str(), output);
+        }
+    }
+}

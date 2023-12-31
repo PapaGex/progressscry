@@ -1,7 +1,10 @@
 [package]
 name = "progressscry"
 version = "0.1.0"
+authors = ["Nathan Stocks, Papagex"]
 edition = "2021"
+description = "Modified version of the Pipeviewer program by Nathan Stocks and the pv utility"
+repository = 
 
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
